@@ -60,9 +60,13 @@ export default class Queue {
         if (index < 0 || index >= this.count) return undefined;
 
         let current = this.head;
-        for (let i = 0; i < index; i++) {
+        let i = 0;
+
+        while (i < index) {
             current = current.next;
+            i++;
         }
+
         return current.data;
     }
 }
