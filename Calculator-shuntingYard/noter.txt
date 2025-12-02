@@ -1,0 +1,44 @@
+--- TRIN 0: Forstå input/output ---
+Input: infix udtryk som string, fx "2 + 3 * 4"
+Output: postfix udtryk som string, fx "2 3 4 * +"
+
+--- TRIN 1: Tokenization ---
+Del input-strengen op i tokens: tal, operatorer, parenteser
+Gem tokens i en inputQueue min egen queue klasse
+
+--- TRIN 2: Opretter vores objekter ---
+outputQueue = ny Queue
+operatorStack = ny Stack
+
+--- TRIN 3: Gennemgå alle tokens fra input ---
+while inputQueue ikke er tom:
+    token = inputQueue.dequeue()
+
+    hvis token er tal:
+        outputQueue.enqueue(token)
+
+    ellers hvis token er operator:
+        mens operatorStack.peek() er operator og regler for precedence/associativity gælder: (https://da.wikipedia.org/wiki/Regnearternes_hierarki)
+            outputQueue.enqueue(operatorStack.pop())
+        operatorStack.push(token)
+
+    ellers hvis token == '(':
+        operatorStack.push(token)
+
+    ellers hvis token == ')':
+        mens operatorStack.peek() != '(':
+            outputQueue.enqueue(operatorStack.pop())
+        fjern '(' fra operatorStack (pop)
+
+    ellers:
+        ugyldigt token → giver fejl.
+
+--- TRIN 4: Når inputQueue er tom ---
+while operatorStack ikke er tom:
+    outputQueue.enqueue(operatorStack.pop())
+
+--- TRIN 5: Lav output string ---
+outputStr = ""
+while outputQueue ikke er tom:
+    outputStr += outputQueue.dequeue() + " "
+return outputStr.trim()
